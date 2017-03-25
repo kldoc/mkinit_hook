@@ -1,0 +1,18 @@
+run_hook ()
+{
+    # Boot parameters as: real_root=loop=/dev/sda1 loopfile=Arch/Arch-i686.img
+    case ${real_root} in loop\=*) 
+    loop=${real_root/loop=}
+    ntfs-3g $loop /host
+    loopfile="/$loopfile"
+    #fstype=$(blkid -u filesystem -o value -s TYPE -p "${loopfile}")
+    mount -o loop -rw $loopfile /new_root
+    mkdir -p /new_root/host
+    mkdir -p /new_root/$loop
+    mount -o bind /host /new_root/host
+    MOUNTED=1
+    ;;
+    esac
+}
+
+
